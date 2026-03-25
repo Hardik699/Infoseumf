@@ -24,7 +24,7 @@ export const SalarySlip: React.FC<SalarySlipProps> = ({ employee, record, leaveR
     { label: "Bonus", actual: record.bonus, earned: record.bonusEarned },
     { label: "Incentive", actual: record.incentive, earned: record.incentiveEarned },
     { label: "Adjustment", actual: record.adjustment, earned: record.adjustmentEarned },
-    { label: "Retention Bonus", actual: record.retentionBonus, earned: record.retentionBonusEarned },
+    { label: "Retention Any", actual: record.retentionBonus, earned: record.retentionBonusEarned },
     { label: "Advance Any", actual: record.advanceAny, earned: record.advanceAnyEarned },
   ];
 

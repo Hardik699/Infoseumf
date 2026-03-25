@@ -258,7 +258,7 @@ const generatePayslipPDF = async (employee: Employee, record: any) => {
             <td style="border: 1px solid #000; padding: 8px; text-align: right;"><strong>TDS</strong></td>
           </tr>
           <tr>
-            <td style="border: 1px solid #000; padding: 8px;">Retention Bonus</td>
+            <td style="border: 1px solid #000; padding: 8px;">Retention Any</td>
             <td style="border: 1px solid #000; padding: 8px; text-align: right;">${(record.retentionBonus || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}</td>
             <td style="border: 1px solid #000; padding: 8px; text-align: right;">${(record.retentionBonusEarned || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}</td>
             <td style="border: 1px solid #000; padding: 8px; text-align: right;"><strong>${employee.retentionType || "Retention"}</strong></td>
@@ -2463,7 +2463,7 @@ export default function EmployeeDetailsPage() {
                               { label: "Incentive", key: "incentive", earnedKey: "incentiveEarned" },
                               { label: "Adjustment", key: "adjustment", earnedKey: "adjustmentEarned" },
                               { label: "Bonus", key: "bonus", earnedKey: "bonusEarned" },
-                              { label: "Retention Bonus", key: "retentionBonus", earnedKey: "retentionBonusEarned" },
+                              { label: "Retention Any", key: "retentionBonus", earnedKey: "retentionBonusEarned" },
                               { label: "Advance Any", key: "advanceAny", earnedKey: "advanceAnyEarned" },
                             ].map((field) => {
                               const actualValue = parseFloat(salaryForm[field.key as keyof typeof salaryForm] as string) || 0;

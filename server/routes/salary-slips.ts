@@ -11,24 +11,24 @@ import PDFDocument from "pdfkit";
 const router = Router();
 
 // Helper function to convert number to words
-function convertNumberToWords(num: number): string {
+function numToWords(num: number): string {
   const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
   const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
   const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
 
-  if (num === 0) return 'Zero Rupees Only';
+  if (num === 0) return '';
   let words = '';
-  
+
   if (num >= 10000000) {
-    words += convertNumberToWords(Math.floor(num / 10000000)) + ' Crore ';
+    words += numToWords(Math.floor(num / 10000000)) + ' Crore ';
     num %= 10000000;
   }
   if (num >= 100000) {
-    words += convertNumberToWords(Math.floor(num / 100000)) + ' Lakh ';
+    words += numToWords(Math.floor(num / 100000)) + ' Lakh ';
     num %= 100000;
   }
   if (num >= 1000) {
-    words += convertNumberToWords(Math.floor(num / 1000)) + ' Thousand ';
+    words += numToWords(Math.floor(num / 1000)) + ' Thousand ';
     num %= 1000;
   }
   if (num >= 100) {
@@ -41,12 +41,17 @@ function convertNumberToWords(num: number): string {
   }
   if (num >= 10) {
     words += teens[num - 10] + ' ';
-    return words + 'Rupees Only';
+    return words;
   }
   if (num > 0) {
     words += ones[num] + ' ';
   }
-  return words + 'Rupees Only';
+  return words;
+}
+
+function convertNumberToWords(num: number): string {
+  if (num === 0) return 'Zero Rupees Only';
+  return numToWords(num).trim() + ' Rupees Only';
 }
 
 // Generate HTML for payslip - exact same format as Payslip component
@@ -140,11 +145,11 @@ table { width:100%; border-collapse:collapse; margin:0 0 10px 0; }
 <tr style="background:#f0f6ff;"><td style="${TD}">Incentive</td><td style="${TD}">0.00</td><td style="${TD}border-right:2px solid #bfdbfe;">${formatCurrency(salaryRecord.incentiveEarned||0)}</td><td style="${TD}">Advance Any</td><td style="${TD}">${formatCurrency(salaryRecord.advanceAnyDeduction||0)}</td></tr>
 <tr style="background:#fff;"><td style="${TD}">Incentive 2</td><td style="${TD}">0.00</td><td style="${TD}border-right:2px solid #bfdbfe;">${formatCurrency(salaryRecord.incentive2Earned||0)}</td><td style="${TD}">Adjustment Deduction</td><td style="${TD}">${formatCurrency(salaryRecord.adjustmentDeduction||0)}</td></tr>
 <tr style="background:#fff;"><td style="${TD}">Adjustment</td><td style="${TD}">0.00</td><td style="${TD}border-right:2px solid #bfdbfe;">${formatCurrency(salaryRecord.adjustmentEarned||salaryRecord.adjustment||0)}</td><td style="${TD}"></td><td style="${TD}"></td></tr>
-<tr style="background:#f0f6ff;"><td style="${TD}">Retention Bonus</td><td style="${TD}">0.00</td><td style="${TD}border-right:2px solid #bfdbfe;">${formatCurrency(salaryRecord.retentionBonus||0)}</td><td style="${TD}"></td><td style="${TD}"></td></tr>
+<tr style="background:#f0f6ff;"><td style="${TD}">Retention Any</td><td style="${TD}">0.00</td><td style="${TD}border-right:2px solid #bfdbfe;">${formatCurrency(salaryRecord.retentionBonus||0)}</td><td style="${TD}"></td><td style="${TD}"></td></tr>
 <tr style="background:#fff;"><td style="${TD}">Advance Any</td><td style="${TD}">0.00</td><td style="${TD}border-right:2px solid #bfdbfe;">${formatCurrency(salaryRecord.advanceAnyEarned||salaryRecord.advanceAny||0)}</td><td style="${TD}"></td><td style="${TD}"></td></tr>
-<tr><td style="${TOTAL}">Gross Earnings</td><td style="${TOTAL}">${formatCurrency(salaryRecord.actualGross||0)}</td><td style="${TOTAL}border-right:2px solid #93c5fd;">${formatCurrency(salaryRecord.earnedGross||0)}</td><td style="${TOTAL}">Total Deduction</td><td style="${TOTAL}">${formatCurrency(salaryRecord.deductions||0)}</td></tr>
-<tr style="background:linear-gradient(90deg,#1e3a8a,#1e40af);"><td colspan="3" style="border:1px solid #3b5fc0;padding:7px 8px;font-weight:800;color:#fff;text-align:center;font-size:10px;">Net Salary Credited</td><td colspan="2" style="border:1px solid #3b5fc0;padding:7px 8px;font-weight:800;color:#fff;text-align:center;font-size:10px;">&#8377; ${formatCurrency(salaryRecord.netSalary||0)}</td></tr>
-<tr style="background:#f8fafc;"><td colspan="3" style="${TD}font-weight:700;color:#374151;">Amount in Words</td><td colspan="2" style="${TD}font-style:italic;color:#15803d;font-weight:700;">${convertNumberToWords(Math.round(salaryRecord.netSalary||0))}</td></tr>
+<tr><td style="${TOTAL}">Gross Earnings</td><td style="${TOTAL}">${formatCurrency((salaryRecord.basic||0)+(salaryRecord.hra||0)+(salaryRecord.conveyance||0)+(salaryRecord.specialAllowance||0)+(salaryRecord.bonus||0)+(salaryRecord.incentive||0)+(salaryRecord.incentive2||0)+(salaryRecord.adjustment||0)+(salaryRecord.retentionBonus||0)+(salaryRecord.advanceAny||0))}</td><td style="${TOTAL}border-right:2px solid #93c5fd;">${formatCurrency((salaryRecord.basicEarned||0)+(salaryRecord.hraEarned||0)+(salaryRecord.conveyanceEarned||0)+(salaryRecord.specialAllowanceEarned||0)+(salaryRecord.bonusEarned||0)+(salaryRecord.incentiveEarned||0)+(salaryRecord.incentive2Earned||0)+(salaryRecord.adjustmentEarned||salaryRecord.adjustment||0)+(salaryRecord.retentionBonus||0)+(salaryRecord.advanceAnyEarned||salaryRecord.advanceAny||0))}</td><td style="${TOTAL}">Total Deduction</td><td style="${TOTAL}">${formatCurrency((salaryRecord.pf||0)+(salaryRecord.esic||0)+(salaryRecord.pt||0)+(salaryRecord.tds||0)+(salaryRecord.retention||0)+(salaryRecord.advanceAnyDeduction||0)+(salaryRecord.adjustmentDeduction||0))}</td></tr>
+<tr style="background:linear-gradient(90deg,#1e3a8a,#1e40af);"><td colspan="3" style="border:1px solid #3b5fc0;padding:7px 8px;font-weight:800;color:#fff;text-align:center;font-size:10px;">Net Salary Credited</td><td colspan="2" style="border:1px solid #3b5fc0;padding:7px 8px;font-weight:800;color:#fff;text-align:center;font-size:10px;">&#8377; ${formatCurrency(((salaryRecord.basicEarned||0)+(salaryRecord.hraEarned||0)+(salaryRecord.conveyanceEarned||0)+(salaryRecord.specialAllowanceEarned||0)+(salaryRecord.bonusEarned||0)+(salaryRecord.incentiveEarned||0)+(salaryRecord.incentive2Earned||0)+(salaryRecord.adjustmentEarned||salaryRecord.adjustment||0)+(salaryRecord.retentionBonus||0)+(salaryRecord.advanceAnyEarned||salaryRecord.advanceAny||0))-((salaryRecord.pf||0)+(salaryRecord.esic||0)+(salaryRecord.pt||0)+(salaryRecord.tds||0)+(salaryRecord.retention||0)+(salaryRecord.advanceAnyDeduction||0)+(salaryRecord.adjustmentDeduction||0)))}</td></tr>
+<tr style="background:#f8fafc;"><td colspan="3" style="${TD}font-weight:700;color:#374151;">Amount in Words</td><td colspan="2" style="${TD}font-style:italic;color:#15803d;font-weight:700;">${convertNumberToWords(Math.round(((salaryRecord.basicEarned||0)+(salaryRecord.hraEarned||0)+(salaryRecord.conveyanceEarned||0)+(salaryRecord.specialAllowanceEarned||0)+(salaryRecord.bonusEarned||0)+(salaryRecord.incentiveEarned||0)+(salaryRecord.incentive2Earned||0)+(salaryRecord.adjustmentEarned||salaryRecord.adjustment||0)+(salaryRecord.retentionBonus||0)+(salaryRecord.advanceAnyEarned||salaryRecord.advanceAny||0))-((salaryRecord.pf||0)+(salaryRecord.esic||0)+(salaryRecord.pt||0)+(salaryRecord.tds||0)+(salaryRecord.retention||0)+(salaryRecord.advanceAnyDeduction||0)+(salaryRecord.adjustmentDeduction||0))))}</td></tr>
 </table>
 
 </div>

@@ -362,8 +362,8 @@ const bulkUploadSalaryRecords: RequestHandler = async (req, res) => {
           incentive2Earned: pf(["Incentive2"]),
           adjustment: pf(["Adjustment"]),
           adjustmentEarned: pf(["Adjustment Earned", "Adjustment"]),
-          retentionBonus: 0,
-          retentionBonusEarned: 0,
+          retentionBonus: pf(["Retention Any", "Retention ANy"]),
+          retentionBonusEarned: pf(["Retention Any", "Retention ANy"]),
           advanceAny: pf(["Advance Any"]),
           advanceAnyEarned: pf(["Advance Any"]),
 

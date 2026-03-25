@@ -246,7 +246,7 @@ export default function PayslipPage() {
           { name: "Incentive", actualGross: 0, earnedGross: incentiveEarned },
           { name: "Incentive 2", actualGross: 0, earnedGross: incentive2Earned },
           { name: "Adjustment", actualGross: 0, earnedGross: adjustmentEarned },
-          { name: "Retention Bonus", actualGross: 0, earnedGross: retentionBonusEarned },
+          { name: "Retention Any", actualGross: 0, earnedGross: retentionBonusEarned },
           { name: "Advance Any", actualGross: 0, earnedGross: advanceAnyEarned },
         ],
         deductions: [
@@ -258,13 +258,13 @@ export default function PayslipPage() {
           { name: "Advance Any", amount: advanceAnyDeduction },
           { name: "Adjustment Deduction", amount: record.adjustmentDeduction || 0 },
         ],
-        grossEarnings: totalEarningsActual,
-        earnedGrossEarnings: totalEarningsEarned,
-        totalDeduction: totalDeductions,
-        netSalaryCredited: record.netSalary || record.totalSalary || 0,
+        grossEarnings: basicSalary + hra + conveyance + specialAllowance + bonus + incentive + (record.incentive2||0) + adjustment + retentionBonus + advanceAny,
+        earnedGrossEarnings: basicEarned + hraEarned + conveyanceEarned + specialAllowanceEarned + bonusEarned + incentiveEarned + incentive2Earned + adjustmentEarned + retentionBonusEarned + advanceAnyEarned,
+        totalDeduction: pf + esic + pt + tds + retention + advanceAnyDeduction + (record.adjustmentDeduction || 0),
+        netSalaryCredited: (basicEarned + hraEarned + conveyanceEarned + specialAllowanceEarned + bonusEarned + incentiveEarned + incentive2Earned + adjustmentEarned + retentionBonusEarned + advanceAnyEarned) - (pf + esic + pt + tds + retention + advanceAnyDeduction + (record.adjustmentDeduction || 0)),
         month: monthNum,
         year: year,
-        amountInWords: convertNumberToWords(Math.round(record.netSalary || record.totalSalary || 0)),
+        amountInWords: convertNumberToWords(Math.round((basicEarned + hraEarned + conveyanceEarned + specialAllowanceEarned + bonusEarned + incentiveEarned + incentive2Earned + adjustmentEarned + retentionBonusEarned + advanceAnyEarned) - (pf + esic + pt + tds + retention + advanceAnyDeduction + (record.adjustmentDeduction || 0)))),
       };
     }
 
@@ -415,7 +415,7 @@ export default function PayslipPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="hidden flex gap-3 justify-center mt-8 mb-8 no-print" style={{padding: '20px'}}>
+          <div className="flex gap-3 justify-center mt-8 mb-8 no-print" style={{padding: '20px'}}>
             {/* Loading Overlay */}
             {(isDownloadingImage || isDownloadingPDF) && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">

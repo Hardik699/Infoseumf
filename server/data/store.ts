@@ -62,7 +62,8 @@ export const db = {
     current.documents.push(doc);
     await writeDB(current);
   },
-  async deleteDocument(salaryId: string, docId: string) {
+  async deleteDocument(salaryId: string, docId: string) {ID	S No	Name	UAN Number	ESIC IP Numbers	Company	Department	Status	CTC	Employer PF	Employer ESIC	Aadhar Card	DOJ	A/C No.	IFSC Code	Actual Gross	Actual Basic	Actual HRA	Actual Conveyance	Actual Spl Allowance	Actual Payable Gross	Total Days	Days Worked	Earned Basic	Earned HRA	Earned Conveyance	Earned Spl Allowance	Earned GROSS	Payable PF Info	PF	PF-2	ESIC	ESIC info	ESIC-2	PT	Retention Deduction	Advance Deduction	Adjustment Deduction	Total Deduction	Net Salary	Incentive1	Incentive2	Final Salary	Bonus	Gratuity	Advance Any	Adjustment Any	TDS	Salary Paid
+
     const current = await readDB();
     current.documents = current.documents.filter(
       (d) => !(d.salaryId === salaryId && d.id === docId),
