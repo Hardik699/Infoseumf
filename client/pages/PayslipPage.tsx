@@ -415,7 +415,7 @@ export default function PayslipPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 justify-center mt-8 mb-8 no-print" style={{padding: '20px'}}>
+          <div className="hidden gap-3 justify-center mt-8 mb-8 no-print" style={{padding: '20px'}}>
             {/* Loading Overlay */}
             {(isDownloadingImage || isDownloadingPDF) && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
